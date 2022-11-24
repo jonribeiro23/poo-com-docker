@@ -1,0 +1,3 @@
+docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=jon -e MYSQL_DATABASE=DB -e MYSQL_USER=jon -e MYSQL_PASSWORD=jon db
+
+docker exec -it container_id bash

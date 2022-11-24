@@ -1,0 +1,37 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:1.17.8
+    ports:
+      - 80:80
+    volumes:
+      - ./site.conf:/etc/nginx/conf.d/site.conf
+      - ./system:/php_app
+    depends_on:
+      - database
+      - php_app
+    restart: unless-stopped
+  php_app:
+    build: .
+    container_name: php_app
+    volumes:
+      - ./system:/php_app
+    depends_on:
+      - database
+    links:
+      - database
+  database:
+    image: mysql
+    ports:
+      - "3306:3036"
+    environment:
+      MYSQL_ROOT_PASSWORD: jon
+      MYSQL_DATABASE: db
+      MYSQL_USER: jon
+      MYSQL_PASSWORD: jon
+    volumes:
+      - db:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d/
+volumes:
+  db:
